@@ -62,9 +62,14 @@ class FLS(object):
 
 class FLSAction:
     def __init__(self):
-        serverload = ctrl.Antecedent(np.arange(0, 200, 1), 'Server Load [%]')
-        client_load = ctrl.Antecedent(np.arange(0, 200, 1), 'Client Load [%]')
-        others_below = ctrl.Antecedent(np.arange(-100, 100, 1), 'Existence of Clients Below Threshold')
+
+        self.serverload_label = 'Server Load [%]'
+        self.client_load_label = 'Client Load [%]'
+        self.others_below_label = 'Existence of Clients Below Threshold'
+
+        serverload = ctrl.Antecedent(np.arange(0, 200, 1), self.serverload_label)
+        client_load = ctrl.Antecedent(np.arange(0, 200, 1), self.client_load_label)
+        others_below = ctrl.Antecedent(np.arange(-100, 100, 1), self.others_below_label)
         bw = ctrl.Consequent(np.arange(-100, 100, 1), 'bandwidth')
 
         antecedent_lv = ["Very Lower", "Lower", "Threshold", "Higher", "Very Higher"]
@@ -113,15 +118,15 @@ class FLSAction:
         if client_load > 200:
             client_load = 200
 
-        if serverload > 100:
-            self.bw.defuzzify_method = 'mom'
-        else:
-            self.bw.defuzzify_method = 'centroid'
-
-
-        self.simulator.input['Server Load [%]'] = serverload
-        self.simulator.input['Client Load [%]'] = client_load
-        self.simulator.input['Existence of Clients Below Threshold'] = others_below
+        #if serverload > 100:
+        #    self.bw.defuzzify_method = 'mom'
+        #else:
+        #    self.bw.defuzzify_method = 'centroid'
+        self.bw.defuzzify_method = 'centroid'
+        print(serverload, client_load, others_below)
+        self.simulator.input[self.serverload_label] = serverload
+        self.simulator.input[self.client_load_label] = client_load
+        self.simulator.input[self.others_below_label] = others_below
 
         self.simulator.compute()
         if show_graphs:
@@ -135,9 +140,9 @@ class FLSAction:
 
     def get_rules_firing(self, serverload, client_load, others_below):
         self.bw.defuzzify_method = 'centroid'
-        self.simulator.input['Server Load [%]'] = serverload
-        self.simulator.input['Client Load [%]'] = client_load
-        self.simulator.input['Existence of Clients Below Threshold'] = others_below
+        self.simulator.input[self.erverload_label] = serverload
+        self.simulator.input[self.client_load_label] = client_load
+        self.simulator.input[self.others_below] = others_below
         self.simulator.compute()
         rule_firing = []
         for r in self.rules:

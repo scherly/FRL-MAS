@@ -56,6 +56,7 @@ class Agent(object):
 
         "Sistema de inferencia fuzzy"
         #self.bootstrap_fls()
+        self.fuzzy_controller = fls.FLSAction()
 
         "Fuzzy Q Learning"
         self.fql_q_function = 0
@@ -75,7 +76,7 @@ class Agent(object):
         "LOCK MODE"
         self.LOCK_MODE = False
         self.SLA_PROBLEM = 0
-
+        
         self.first = True
 
     def reset_q_table(self):
@@ -395,7 +396,7 @@ class Agent(object):
         #time.sleep(random.random())
         self.client.update()
         others_below, serverload, client_load = self.get_fuzzy_variables(clients)
-        self.do_fuzzy_action(settings.FLS.get_bw(
+        self.do_fuzzy_action(self.fuzzy_controller.get_bw(
             serverload=serverload,
             client_load=client_load,
             others_below=others_below,

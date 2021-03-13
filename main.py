@@ -170,7 +170,7 @@ if __name__ == "__main__":
                     settings.INTERCALATE = True
                 if settings.FUZZY:
                     for t in fuzzy_times:
-                        for count in range(0, 20):
+                        for count in range(0, 40):
                             now_file = f'{filename}-{t}-{count}.txt'
                             if os.path.isfile(now_file):
                                 file = open(now_file, "r")
@@ -202,7 +202,7 @@ if __name__ == "__main__":
                             main(settings.LOOP, now_file, index=count, states=s)
 
                 else:
-                    for count in range(0, 20):
+                    for count in range(0, 40):
                         now_file = f'{filename}{count}-{settings.STATES}-{repeat_count}.txt'
                         print(now_file)
                         if os.path.isfile(now_file):
